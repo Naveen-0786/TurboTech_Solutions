@@ -30,12 +30,17 @@ const ChatWidget = () => {
     setIsTyping(true);
 
     try {
+      const headers = {
+        "Content-Type": "application/json"
+      };
+
+      if (import.meta.env.VITE_NVIDIA_API_KEY) {
+        headers["Authorization"] = `Bearer ${import.meta.env.VITE_NVIDIA_API_KEY}`;
+      }
+
       const response = await fetch("/api/nvidia", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${import.meta.env.VITE_NVIDIA_API_KEY}`
-        },
+        headers,
         body: JSON.stringify({
           model: "meta/llama-3.1-8b-instruct",
           messages: [
